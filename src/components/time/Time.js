@@ -20,12 +20,3 @@ const TimestampHello = ({ name, showNewHello }) => {
     );
 };
 
-function App() {
-    return (
-        <div className="App">
-            <TimestampHello name="Hello world" showNewHello={true} />
-        </div>
-    );
-}
-
-export default App;

@@ -1,9 +1,8 @@
-import React from "react";
+import React from 'react';
 
 const Title = (props) => {
-    return (
-        <h1>Hello world</h1>
-    )
-}
+    const { currentDateTime } = props;
+    return <h1>Hello world ({currentDateTime.toLocaleString('pt-BR')})</h1>;
+};
 
 export default Title;

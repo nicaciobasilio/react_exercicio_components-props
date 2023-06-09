@@ -8,6 +8,7 @@ const Hello = (props) => {
     const [showDelayedHello, setShowDelayedHello] = useState(false);
     const [showAnimatedHello, setShowAnimatedHello] = useState(false);
     const [hideMouseOverHello, setHideMouseOverHello] = useState(false);
+    const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
     useEffect(() => {
         const coloredTimer = setTimeout(() => {
@@ -18,9 +19,14 @@ const Hello = (props) => {
             setShowDelayedHello(true);
         }, 3000);
 
+        const interval = setInterval(() => {
+            setCurrentDateTime(new Date());
+        }, 1000);
+
         return () => {
             clearTimeout(coloredTimer);
             clearTimeout(delayedTimer);
+            clearInterval(interval);
         };
     }, []);
 
@@ -41,35 +47,49 @@ const Hello = (props) => {
         setHideMouseOverHello(true);
     };
 
+    const formatDate = (date) => {
+        const options = {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            timeZone: 'America/Sao_Paulo',
+        };
+
+        return date.toLocaleString('pt-BR', options);
+    };
+
     return (
         <div>
             {/* Hello World 1 - Título padrão */}
-            <h2>Hello World</h2>
+            <h2>Hello World ({formatDate(currentDateTime)})</h2>
             {/* Hello World 2 - Componente personalizado */}
-            <Title />
+            <Title currentDateTime={currentDateTime} />
             {/* Hello World 3 - Componente personalizado com propriedade "name" */}
-            <Secundary name="Hello world" />
+            <Secundary name="Hello world" currentDateTime={currentDateTime} />
             {/* Hello World 4 - Texto em itálico */}
-            <i>Hello World</i>
+            <i>Hello World ({formatDate(currentDateTime)})</i>
             {/* Hello World 5 - Texto com classe "red" para ficar vermelho */}
             <span className="red">
-                <Title />
+                <Title currentDateTime={currentDateTime} />
             </span>
             {showColoredHello && (
                 <span>
                     {/* Hello World 6 - Texto colorido em cada letra */}
-                    {renderColoredText('Hello World')}
+                    {renderColoredText(`Hello World (${formatDate(currentDateTime)})`)}
                 </span>
             )}
             {showDelayedHello && (
                 <div>
                     {/* Hello World 7 - Título que aparece após 3 segundos */}
-                    <h2>Hello World - aparece após 3 segundos</h2>
+                    <h2>Hello World - aparece após 3 segundos ({formatDate(currentDateTime)})</h2>
                 </div>
             )}
             <div>
                 {/* Hello World 8 - Título transformado em letras maiúsculas */}
-                <h2>{transformToUppercase('Hello World')}</h2>
+                <h2>{transformToUppercase(`Hello World (${formatDate(currentDateTime)})`)}</h2>
             </div>
             <div
                 className={`animated ${showAnimatedHello ? 'rotate' : ''}`}
@@ -77,7 +97,7 @@ const Hello = (props) => {
                 onMouseLeave={() => setShowAnimatedHello(false)}
             >
                 {/* Hello World 9 - Título que roda ao passar o mouse */}
-                <h2>Hello World - passe o mouse para animação</h2>
+                <h2>Hello World - passe o mouse para animação ({formatDate(currentDateTime)})</h2>
             </div>
             {!hideMouseOverHello && (
                 <div
@@ -86,11 +106,11 @@ const Hello = (props) => {
                     style={{ cursor: 'pointer' }}
                 >
                     {/* Hello World 10 - Título que desaparece ao passar o mouse */}
-                    <h2>Hello World - desaparece ao passar o mouse</h2>
+                    <h2>Hello World - desaparece ao passar o mouse ({formatDate(currentDateTime)})</h2>
                 </div>
             )}
         </div>
     );
-}
+};
 
 export default Hello;
